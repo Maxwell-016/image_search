@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_search/themes.dart';
-import 'package:image_search/ui/description_page.dart';
 import 'ui/home_page.dart';
 
 void main()  async{
@@ -21,8 +20,7 @@ class MyApp extends StatelessWidget {
       theme: Themes.lightTheme,
       darkTheme: Themes.darkTheme,
       themeMode: ThemeMode.system,
-      home: const DescriptionPage("This is a trial ui", 20)
-      //const MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }

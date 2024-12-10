@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_search/components.dart';
 
 class DescriptionPage extends HookConsumerWidget {
   final String description;
   final int likes;
-  const DescriptionPage(this.description, this.likes, {super.key});
+  final String url;
+  const DescriptionPage(this.description, this.likes, this.url, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,7 +17,6 @@ class DescriptionPage extends HookConsumerWidget {
     Color blackAndWhite = isDark?Colors.white : Colors.black;
     return Scaffold(
       appBar: AppBar(
-
       ),
       body: ListView(
         scrollDirection: Axis.vertical,
@@ -38,16 +39,17 @@ class DescriptionPage extends HookConsumerWidget {
                   ),
                 );
               },
-              imageUrl:
-                  "https://images.unsplash.com/photo-1587893904933-5b23fefaea6d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1NzE5NTZ8MHwxfHNlYXJjaHwzfHxwbGFuZXxlbnwwfHx8fDE3MzM4NTI5ODB8MA&ixlib=rb-4.0.3&q=80&w=1080",
+              imageUrl: url,
               fit: BoxFit.cover,
+              filterQuality: FilterQuality.high,
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
-          Text(
-            description,
+          Padding(
+            padding: const EdgeInsets.only(left: 18.0),
+            child: OpenSans(text: description, color: blackAndWhite),
           ),
           const SizedBox(
             height: 20.0,
@@ -57,28 +59,36 @@ class DescriptionPage extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
-                height: 60.0,
-                width: 100.0,
                 decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(15.0),color: Colors.transparent),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Icon(
                       Icons.favorite,
                       color: Colors.red,
                     ),
-                    Text(likes.toString()),
+                    OpenSans(text: " ${likes.toString()}", color: blackAndWhite),
                   ],
                 ),
               ),
-              FloatingActionButton.extended(
-                onPressed: () {},
-                label: const Text("Save"),
-                icon: Icon(Icons.save_alt_rounded,color: blackAndWhite,),
+              FrostedGlass(
+                height: 50.0,
+                width: 100.0,
+                borderColor: blackAndWhite,
+                child: FloatingActionButton.extended(
+                  onPressed: () {},
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)
+                  ),
+                  label: OpenSans(text: "Save", color: blackAndWhite),
+                  icon: Icon(Icons.save_alt_rounded,color: blackAndWhite,),
+                ),
               )
+
             ],
-          )
+          ),
+          const SizedBox(height: 50.0,)
         ],
       ),
     );
