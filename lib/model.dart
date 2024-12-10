@@ -17,7 +17,7 @@ class Model extends ChangeNotifier {
           .get("https://api.unsplash.com/search/photos", queryParameters: {
         'client_id': accessKey,
         'query': query,
-        'per_page': 12,
+        'per_page': 30,
         'page': 1,
       });
       photoUrls = response.data['results']

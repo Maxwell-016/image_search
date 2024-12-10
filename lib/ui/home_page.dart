@@ -12,7 +12,9 @@ class MyHomePage extends HookConsumerWidget {
     final modelProvider = ref.watch(model);
     TextEditingController searchController = TextEditingController();
     Logger logger = Logger();
-    double deviceWidth = MediaQuery.of(context).size.height;
+    double deviceHeight = MediaQuery.of(context).size.height;
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    Color blackAndWhite = isDarkMode ? Colors.white : Colors.black;
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -40,13 +42,11 @@ class MyHomePage extends HookConsumerWidget {
                 decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide:
-                          const BorderSide(width: 2.0, color: Colors.white),
+                      borderSide: BorderSide(width: 2.0, color: blackAndWhite),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide:
-                          const BorderSide(width: 2.0, color: Colors.white),
+                      borderSide: BorderSide(width: 2.0, color: blackAndWhite),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -85,7 +85,7 @@ class MyHomePage extends HookConsumerWidget {
               height: 30.0,
             ),
             SizedBox(
-              height: deviceWidth / 1.35,
+              height: deviceHeight / 1.35,
               child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 300,
@@ -99,18 +99,26 @@ class MyHomePage extends HookConsumerWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      child: modelProvider.photoUrls[index].isEmpty
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: CachedNetworkImage(
-                               progressIndicatorBuilder: (context,url,progress) => Center(child: CircularProgressIndicator(value: progress.progress,)),
-                                imageUrl: modelProvider.photoUrls[index],
-                                fit: BoxFit.fill,
-                              )
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: CachedNetworkImage(
+                          progressIndicatorBuilder: (context, url, progress) =>
+                              Center(
+                            child: CircularProgressIndicator(
+                              value: progress.progress,
                             ),
+                          ),
+                          errorWidget: (context, url, error) => const Center(
+                            child: Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 30.0,
+                            ),
+                          ),
+                          imageUrl: modelProvider.photoUrls[index],
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     );
                   }),
             )
@@ -123,6 +131,6 @@ class MyHomePage extends HookConsumerWidget {
 
 // TODO: add images to the screen as the user scrolls,
 // TODO: add the shining animation when the image is loading,
-// TODO: try to optimize performance speed of the app,
-// TODO: implement the error logic
+/// try to optimize performance speed of the app,
+///implement the error logic
 // TODO: enable image download
